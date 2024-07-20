@@ -1,20 +1,29 @@
+package old;
+
 import java.io.*;
 
-class CustomBufferedReader02 extends BufferedReader {
+public class CustomBufferedReaderOld extends BufferedReader {
     private static final int MAX_LINE_LENGTH = 100;
+    private static final int MAX_LINES = 100000;
     private char[] buffer;
     private int bufferPos;
     private int bufferEnd;
+    private int lineCount;
 
-    public CustomBufferedReader02(Reader in) {
+    public CustomBufferedReaderOld(Reader in) {
         super(in);
         buffer = new char[MAX_LINE_LENGTH];
         bufferPos = 0;
         bufferEnd = 0;
+        lineCount = 0;
     }
 
     @Override
     public String readLine() throws IOException {
+        if (lineCount >= MAX_LINES) {
+            throw new IOException("File contains too many lines");
+        }
+
         StringBuilder line = new StringBuilder();
         int charCount = 0;
         boolean endOfLine = false;
@@ -59,23 +68,7 @@ class CustomBufferedReader02 extends BufferedReader {
             return null;
         }
 
+        lineCount++;
         return line.toString();
-    }
-
-    public static void main(String[] args) {
-        try {
-            File file = new File("D:\\dev\\tmp\\fileToRead.txt");
-            FileReader fileReader = new FileReader(file);
-            CustomBufferedReader02 customReader = new CustomBufferedReader02(fileReader);
-
-            String line;
-            while ((line = customReader.readLine()) != null) {
-                System.out.println(line);
-            }
-
-            customReader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

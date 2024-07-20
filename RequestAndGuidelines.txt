@@ -1,0 +1,18 @@
+Request 1:
+I need a Java program that meets the following requirements:
+1. Read the file attatched line by line printing each line
+2. The maximum length allowed for reading each line is 100 characters
+3. Do not use the readLine() method of BufferedReader to read each line. 
+	3.1 Create a class that extends BufferedReader and overrides the readLine method, which must return the line read up to the maximum 		length allowed or when a line break is entered (CR LF) if size line less or equal 100 characters.
+	3.2. If the line greater than 100 caracteres, return a string with 100 characters and disregard the rest of the line. 
+	     The next call to readLine() must return the line after this
+4. Use only libs of Java SE
+5. Create a complete program in one file .java only, which will contain the extended Buffered Reader class with its constructors and the readLine method
+
+Request 2:
+On item 4, is it possible the readLine() method discarding the remaining characters after th 100 read without call super.read() and on the caller method when call customer.readLine get the following line ?
+
+Request 3:
+If necessary, modify this program to prevent a denial of service attack in the following instances:
+1. The file read created by an attacker has an excessively long line that does not have a line terminator
+2. The file has an excessively large number of lines, for example, 1,000,000

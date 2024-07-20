@@ -1,24 +1,18 @@
+package old;
+
 import java.io.*;
 
-public class CustomBufferedReader extends BufferedReader {
-    private static final int DEFAULT_MAX_LINE_LENGTH = 100;
-    private static final int DEFAULT_MAX_LINES = 1000000;
+class CustomBufferedReader03 extends BufferedReader {
+    private static final int MAX_LINE_LENGTH = 100;
+    private static final int MAX_LINES = 10000;
     private char[] buffer;
     private int bufferPos;
     private int bufferEnd;
     private int lineCount;
-    private int maxLineLength;
-    private int maxLines;
 
-    public CustomBufferedReader(Reader in) {
-        this(in, DEFAULT_MAX_LINE_LENGTH, DEFAULT_MAX_LINES);
-    }
-
-    public CustomBufferedReader(Reader in, int maxLineLength, int maxLines) {
+    public CustomBufferedReader03(Reader in) {
         super(in);
-        this.maxLineLength = maxLineLength;
-        this.maxLines = maxLines;
-        buffer = new char[maxLineLength];
+        buffer = new char[MAX_LINE_LENGTH];
         bufferPos = 0;
         bufferEnd = 0;
         lineCount = 0;
@@ -26,7 +20,7 @@ public class CustomBufferedReader extends BufferedReader {
 
     @Override
     public String readLine() throws IOException {
-        if (lineCount >= maxLines) {
+        if (lineCount >= MAX_LINES) {
             throw new IOException("File contains too many lines");
         }
 
@@ -34,9 +28,9 @@ public class CustomBufferedReader extends BufferedReader {
         int charCount = 0;
         boolean endOfLine = false;
 
-        while (charCount < maxLineLength && !endOfLine) {
+        while (charCount < MAX_LINE_LENGTH && !endOfLine) {
             if (bufferPos >= bufferEnd) {
-                bufferEnd = super.read(buffer, 0, maxLineLength);
+                bufferEnd = super.read(buffer, 0, MAX_LINE_LENGTH);
                 bufferPos = 0;
 
                 if (bufferEnd == -1) {
@@ -53,10 +47,10 @@ public class CustomBufferedReader extends BufferedReader {
             }
         }
 
-        // Skip remaining characters in the current line if they exceed maxLineLength
+        // Skip remaining characters in the current line if they exceed MAX_LINE_LENGTH
         while (!endOfLine && bufferEnd != -1) {
             if (bufferPos >= bufferEnd) {
-                bufferEnd = super.read(buffer, 0, maxLineLength);
+                bufferEnd = super.read(buffer, 0, MAX_LINE_LENGTH);
                 bufferPos = 0;
 
                 if (bufferEnd == -1) {
@@ -76,5 +70,22 @@ public class CustomBufferedReader extends BufferedReader {
 
         lineCount++;
         return line.toString();
+    }
+
+    public static void main(String[] args) {
+        try {
+            File file = new File("D:\\dev\\tmp\\fileToRead.txt");
+            FileReader fileReader = new FileReader(file);
+            CustomBufferedReader03 customReader = new CustomBufferedReader03(fileReader);
+
+            String line;
+            while ((line = customReader.readLine()) != null) {
+                System.out.println(line);
+            }
+
+            customReader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
