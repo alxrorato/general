@@ -32,7 +32,7 @@ public class CustomBufferedReader extends BufferedReader {
             throw new IOException("File contains too many lines");
         }
 
-        StringBuilder line = new StringBuilder();
+        StringBuilder line = new StringBuilder(maxLineLength);
         int charCount = 0;
         boolean endOfLine = false;
 
